@@ -27,11 +27,11 @@
 
 ```javascript
 // здесь перечислены все возможные параметры для функции
-  createRequest({
+createRequest({
     url: 'https://example.com', // адрес
     data: { // произвольные данные, могут отсутствовать
-      email: 'ivan@poselok.ru',
-      password: 'odinodin'
+        email: 'ivan@poselok.ru',
+        password: 'odinodin'
     },
     method: 'GET', // метод запроса
     /*
@@ -41,10 +41,12 @@
       Если в запросе есть данные, они должны быть переданы в response.
     */
     callback: (err, response) => {
-      console.log( 'Ошибка, если есть', err );
-      console.log( 'Данные, если нет ошибки', response );
+        console.log('Ошибка, если есть', err);
+        console.log('Данные, если нет ошибки', response);
     }
-  });
+}, (err, response) => {
+    callback(err, response)
+});
 ```
 
 ### 1. XHR
@@ -60,11 +62,13 @@
   createRequest({
     url: 'https://example.com',
     data: {
-      mail: 'ivan@biz.pro',
-      password: 'odinodin'
+        mail: 'ivan@biz.pro',
+        password: 'odinodin'
     },
     method: 'GET',
-  });
+}, (err, response) => {
+    callback(err, response)
+});
 ```
 
 аналогичен коду:
@@ -77,17 +81,19 @@ xhr.send();
 ```
 
 *2.* При параметре *method* *отличном от GET*, данные из объекта 
-    *data* должны передаваться через объект FormData. Например, листинг 
+    *data* должны передаваться через объект FormData. Например, листинг
 
 ```javascript
   createRequest({
     url: 'https://example.com',
     data: {
-      mail: 'ivan@biz.pro',
-      password: 'odinodin'
+        mail: 'ivan@biz.pro',
+        password: 'odinodin'
     },
     method: 'POST',
-  });
+}, (err, response) => {
+    callback(err, response)
+});
 ```
 
 аналогичен коду:
@@ -117,17 +123,19 @@ xhr.responseType = 'json'; // формат, в котором необходим
 
 ```javascript
 // при успешном выполнении
-  createRequest({
+createRequest({
     url: 'https://example.com',
     method: 'GET',
-    callback: ( err, response ) => {
-      /*
-        при успешном выполнении err = null, response содержит данные ответа
-      */
-      console.log( err ); // null
-      console.log( response ); // ответ
+    callback: (err, response) => {
+        /*
+          при успешном выполнении err = null, response содержит данные ответа
+        */
+        console.log(err); // null
+        console.log(response); // ответ
     }
-  });
+}, (err, response) => {
+    callback(err, response)
+});
 ```
 
 В случае, если в процессе выполнения функции возникают ошибки, вам
@@ -135,13 +143,15 @@ xhr.responseType = 'json'; // формат, в котором необходим
 
 ```javascript
 // при ошибке
-  createRequest({
+createRequest({
     url: 'https://example.com',
     method: 'GET',
-    callback: ( err, response ) => {
-      console.log( err ); // объект ошибки
+    callback: (err, response) => {
+        console.log(err); // объект ошибки
     }
-  });
+}, (err, response) => {
+    callback(err, response)
+});
 ```
 
 ## Entity
@@ -597,22 +607,24 @@ const createRequest = options => {
 
 ```javascript
 class User {
-  static fetch( callback ) {
-    // ...
-    const xhr = createRequest({
-      // ...
-      // задаём функцию обратного вызова
-      callback( err, response ) {
-        if ( response && response.user ) {
-          User.setCurrent( response.user );
-        }
+    static fetch(callback) {
         // ...
-        // вызываем параметр, переданный в метод fetch
-        callback( err, response );
-      }
-      // ...
-    });
-  }
+        const xhr = createRequest({
+            // ...
+            // задаём функцию обратного вызова
+            callback(err, response) {
+                if (response && response.user) {
+                    User.setCurrent(response.user);
+                }
+                // ...
+                // вызываем параметр, переданный в метод fetch
+                callback(err, response);
+            }
+            // ...
+        }, (err, response) => {
+            callback(err, response)
+        });
+    }
 }
 ```
 

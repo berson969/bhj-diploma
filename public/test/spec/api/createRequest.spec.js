@@ -17,16 +17,20 @@ describe("Функция createRequest", function() {
   });
 
   it("Создаёт объект XMLHttpRequest", function() {
-    const xhr = createRequest();
+    const xhr = createRequest({}, (err, response) => {
+        callback(err, response)
+    });
     expect(xhr).to.an.instanceof(XMLHttpRequest);
   });
 
   it("Передаёт параметр responseType", function() {
     const url = 'https://jsonplaceholder.typicode.com/todos/1',
       xhr = createRequest({
-        url,
-        responseType: 'json',
-        method: 'POST'
+          url,
+          responseType: 'json',
+          method: 'POST'
+      }, (err, response) => {
+          callback(err, response)
       });
     expect(xhr.responseType).to.equal('json');
   });
@@ -34,8 +38,10 @@ describe("Функция createRequest", function() {
   it("Передаёт параметр url", function() {
     const url = 'https://jsonplaceholder.typicode.com/todos/1',
       xhr = createRequest({
-        url,
-        method: 'POST'
+          url,
+          method: 'POST'
+      }, (err, response) => {
+          callback(err, response)
       });
 
     expect(xhr.requestURL).to.equal(url);
@@ -44,8 +50,10 @@ describe("Функция createRequest", function() {
   it("Передаёт параметр method", function() {
     const url = 'https://jsonplaceholder.typicode.com/todos/1',
       xhr = createRequest({
-        url,
-        method: 'POST'
+          url,
+          method: 'POST'
+      }, (err, response) => {
+          callback(err, response)
       });
     expect(xhr.requestMethod).to.equal('POST');
   });
@@ -53,13 +61,15 @@ describe("Функция createRequest", function() {
   it("Вызывает callback и передаёт данные при успешном запросе", function( done ) {
     const url = 'https://jsonplaceholder.typicode.com/todos/1',
       xhr = createRequest({
-        url,
-        responseType: 'json',
-        method: 'GET',
-        callback: (err, data) => {
-          expect(data).to.be.a('object');
-          done();
-        }
+          url,
+          responseType: 'json',
+          method: 'GET',
+          callback: (err, data) => {
+              expect(data).to.be.a('object');
+              done();
+          }
+      }, (err, response) => {
+          callback(err, response)
       });
   });
 
@@ -71,9 +81,11 @@ describe("Функция createRequest", function() {
         iron: 'maiden'
       },
       xhr = createRequest({
-        url,
-        method: 'POST',
-        data
+          url,
+          method: 'POST',
+          data
+      }, (err, response) => {
+          callback(err, response)
       }),
       sentData = [...xhr.data].reduce(( target, [ key, value ]) => {
         target[ key ] = value;
