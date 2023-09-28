@@ -15,7 +15,9 @@ class Account extends Entity {
         data: null,
         callback: (err, response) => {
             callback(err, response)
-        }
+            }
+        }, (err, response) => {
+            callback(err, response)
     })
   }
 }

@@ -17,7 +17,9 @@ class Entity {
         data: data,
         callback: (err, response) => {
             callback(err, response)
-        }
+            }
+        }, (err, response) => {
+            callback(err, response)
     })
   }
 
@@ -35,7 +37,9 @@ class Entity {
         data: data,
         callback: (err, response) => {
             callback(err, response)
-        }
+            }
+        }, (err, response) => {
+            callback(err, response)
     })
   }
 
@@ -51,7 +55,9 @@ class Entity {
         data: data,
         callback: (err, response) => {
             callback(err, response)
-        }
+            }
+        }, (err, response) => {
+            callback(err, response)
     })
   }
 }

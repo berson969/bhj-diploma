@@ -10,6 +10,13 @@ class LoginForm extends AsyncForm {
    * закрывает окно, в котором находится форма
    * */
   onSubmit(data) {
-
+    User.login(data, (err, response) => {
+      if (response && response.success) {
+        App.setState('user_logged')
+        const modalLogin = App.getModal('login')
+        console.log('modalLogin', modalLogin)
+        modalLogin.close()
+        }
+    })
   }
 }

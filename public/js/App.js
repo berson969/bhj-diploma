@@ -31,8 +31,7 @@ class App {
    * состояние 'init'
    * */
   static initUser() {
-    console.log('init', User.current())
-    User.fetch(() => this.setState(User.current() ? "user-logged" : "init"));
+    User.fetch(() => this.setState(User.current() ? "user-logged" : "init"))
   }
 
   /**

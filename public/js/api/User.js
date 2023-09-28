@@ -1,7 +1,7 @@
 /**
  * Класс User управляет авторизацией, выходом и
  * регистрацией пользователя из приложения
- * Имеет свойство URL, равное '/user'.
+ * имеет свойство URL, равное '/user'.
  * */
 class User {
   static URL = '/user'
@@ -42,12 +42,15 @@ class User {
       url: `${this.URL}/current`,
       method: 'GET',
       data: null,
-      // },
       callback: (err, response) => {
-        if (response && response.user) {
-          this.setCurrent(response.user)
-        }
-        callback(err, response)
+        console.log('current', response)
+        if (response) {
+          if (response.user) {
+            this.setCurrent(response.user)
+          }
+          callback(err, response)
+          App.initUser()
+          }
       }
     })
   }
@@ -63,14 +66,14 @@ class User {
     createRequest({
       url: this.URL + '/login',
       method: 'POST',
-      responseType: 'json',
-      data,
+      // responseType: 'json',
+      data: data,
       callback: (err, response) => {
         if (response && response.user) {
-          this.setCurrent(response.user);
+          this.setCurrent(response.user)
         }
-        callback(err, response);
-      }
+        callback(err, response)
+        }
     })
   }
 
@@ -86,7 +89,10 @@ class User {
       method: 'POST',
       data: data,
       callback: (err, response) => {
-        callback(err, response)
+        if (response && response.user) {
+          this.setCurrent(response.user)
+        }
+          callback(err, response)
       }
     })
   }
@@ -101,6 +107,9 @@ class User {
       method: 'POST',
       data: null,
       callback: (err, response) => {
+        if (err) {
+          User.unsetCurrent()
+        }
         callback(err, response)
       }
     })

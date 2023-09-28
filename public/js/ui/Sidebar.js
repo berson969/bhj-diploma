@@ -52,12 +52,8 @@ class Sidebar {
 
     logoutButton.addEventListener('click', () => {
       User.logout((err, response) => {
-        console.log('logout')
-        if (response && response.success) {
           App.setState('init')
-          const logoutModal = App.getModal('logout')
-          logoutModal.close()
-        }
+        // }
       })
     })
   }

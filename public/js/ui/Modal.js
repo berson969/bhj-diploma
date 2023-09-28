@@ -7,16 +7,17 @@
 class Modal {
   /**
    * Устанавливает текущий элемент в свойство element
-   * Регистрирует обработчики событий с помощью Modal.registerEvents()
+   * регистрирует обработчики событий с помощью Modal.registerEvents()
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor(element){
-    if(!element) {
+  constructor(element) {
+    if (element) {
+      this.element = element
+      this.registerEvents()
+    } else {
       throw new Error('Element is required')
     }
-    this.element = element
-    this.registerEvents()
   }
 
   /**
@@ -28,7 +29,12 @@ class Modal {
     const closeButtons = this.element.querySelectorAll('[data-dismiss="modal"]')
     closeButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
-        event.preventDefault()
+        // event.preventDefault()
+        if(event.target.classList.contains('btn-primary')) {
+          const formData = new FormData(event.target.closest('form'))
+
+          console.log('register', formData)
+        }
         this.onClose()
       })
     })

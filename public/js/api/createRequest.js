@@ -2,68 +2,51 @@
  * Основная функция для совершения запросов
  * на сервер.
  * */
-
-let formData = new FormData();
-
-
-
-// function createRequest(options, callback)  {
+const URL = 'http://localhost:8000'
+let queryString = ''
 const createRequest = (options = {}, p) => {
 
-    let url
-    // let formData = new FormData()
+    const xhr = new XMLHttpRequest()
+    xhr.responseType = 'json'
+    const formData = new FormData()
 
     console.log('options', options)
     if(options.data) {
         if (options.method === "GET") {
 
-            const queryString = Object.keys(options.data)
+            queryString = "?" + Object.keys(options.data)
                 .map((key) => `${key}=${encodeURIComponent(options.data[key])}`)
                 .join('&')
-
-            console.log(queryString);
-            url = `${options.url}?${queryString}`
         } else {
-
             Object.keys(options.data).forEach(key => {
-                console.log('key', key, options.data[key] )
                 formData.append(key, options.data[key].toString())
-                console.log('formData000', formData.get(key))
-
             })
-
-            url = options.url
         }
-    } else {
-        url = options.url
     }
-    console.log(url)
-    console.log("formData", formData.get('mail'))
-
-    const xhr = new XMLHttpRequest()
-    xhr.responseType = 'json'
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState === xhr.DONE) {
-            if (xhr.status >= 200 && xhr.status < 300 && xhr.status) {
-                options.callback(null, xhr.response)
-                console.log('Данные, если нет ошибки', {response: xhr.response, status: xhr.status})
-            } else {
-                console.log( 'Ошибка, если есть', {status: xhr.status, statusText: xhr.statusText})
-                options.callback({status: xhr.status, statusText: xhr.statusText}, null);
+            if (xhr.status) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    options.callback(null, xhr.response)
+                    console.log('Данные, если нет ошибки', {response: xhr.response, status: xhr.status})
+                } else {
+                    console.log('Ошибка, если есть', {status: xhr.status, statusText: xhr.statusText})
+                    options.callback({status: xhr.status, statusText: xhr.statusText}, null);
+                }
             }
         }
     }
-
-    xhr.open(options.method, url)
-
+    console.log('request', options.method, options.url, formData.get('email'))
+    xhr.open(options.method, URL + options.url + queryString, true)
+    xhr.withCredentials = true
     xhr.send(options.method === 'GET' ? null : formData)
 }
 
 // createRequest({
 //     url: '/user/login',
 //     data: {
-//         mail: 'ivan@biz.pro',
+//         email: 'ivan@biz.pro',
 //         password: 'odinodin'
 //     },
 //     method: 'POST',

@@ -13,11 +13,12 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-    if (!element) {
+    if (element) {
+      this.element = element
+      this.registerEvents()
+    } else {
       throw new Error('Element is required')
     }
-    this.element = element
-    this.registerEvents()
   }
 
   /**
