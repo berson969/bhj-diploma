@@ -11,16 +11,12 @@ class Entity {
   static URL = ''
 
   static list(data, callback) {
-    createRequest({
-        url: this.URL,
-        method: 'GET',
-        data: data,
-        callback: (err, response) => {
-            callback(err, response)
-            }
-        }, (err, response) => {
-            callback(err, response)
-    })
+          createRequest({
+              url: this.URL + "/",
+              method: 'GET',
+              data,
+              callback,
+          })
   }
 
 
@@ -33,13 +29,9 @@ class Entity {
   static create(data, callback) {
     createRequest({
         url: this.URL,
-        method: 'POST',
-        data: data,
-        callback: (err, response) => {
-            callback(err, response)
-            }
-        }, (err, response) => {
-            callback(err, response)
+        method: 'PUT',
+        data,
+        callback,
     })
   }
 
@@ -52,12 +44,8 @@ class Entity {
     createRequest({
         url: this.URL,
         method: 'DELETE',
-        data: data,
-        callback: (err, response) => {
-            callback(err, response)
-            }
-        }, (err, response) => {
-            callback(err, response)
+        data,
+        callback,
     })
   }
 }

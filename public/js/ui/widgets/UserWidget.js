@@ -11,7 +11,7 @@ class UserWidget {
    * Если переданный элемент не существует,
    * необходимо выкинуть ошибку.
    * */
-  constructor(element){
+  constructor(element) {
     if (element) {
       this.element = element
     } else {
@@ -26,12 +26,34 @@ class UserWidget {
    * в элемент .user-name устанавливает имя
    * авторизованного пользователя
    * */
-  update(){
+  update() {
     const currentUser = User.current()
-    console.log('currentUser', currentUser)
-    const userName = document.querySelector('.user-name')
-    userName.textContent = currentUser.name
-    document.body.classList.remove('app_user-logged')
+    const content = document.querySelector('.content-header')
 
+    if (currentUser) {
+      this.element.querySelector('.user-name').textContent = currentUser.name
+      content.style.display = 'block'
+    } else {
+      content.style.display = 'none'
+    }
   }
 }
+
+//     const mainPanel = document.querySelector('.main-sidebar')
+//     const userName = document.querySelector('.user-name')
+//     const content = document.querySelector('.content-header')
+//
+//     console.log('currentUser_update', currentUser)
+//     if (currentUser) {
+//
+//       mainPanel.classList.add('app_user-logged')
+//       userName.textContent = currentUser.name
+//       App.getModal( 'login' ).close()
+//       content.style.display = 'block'
+//     } else {
+//       userName.textContent = ""
+//       mainPanel.classList.remove('app_user-logged')
+//       content.style.display = 'none'
+//     }
+//   }
+// }

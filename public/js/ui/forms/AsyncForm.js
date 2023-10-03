@@ -29,6 +29,7 @@ class AsyncForm {
     this.element.addEventListener('submit', (event) => {
       event.preventDefault()
       this.submit()
+
     })
   }
 
@@ -49,9 +50,7 @@ class AsyncForm {
     return data
   }
 
-  onSubmit(options){
-
-  }
+  onSubmit(options) {}
 
   /**
    * Вызывает метод onSubmit и передаёт туда

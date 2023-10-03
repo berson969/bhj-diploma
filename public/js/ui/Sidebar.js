@@ -19,7 +19,6 @@ class Sidebar {
    * */
   static initToggleButton() {
     const sidebarButton = document.querySelector('.sidebar-toggle')
-    console.log('sidebarButton', sidebarButton)
     sidebarButton.addEventListener('click', (event) => {
       event.preventDefault()
       document.body.classList.toggle("sidebar-open" )
@@ -31,13 +30,13 @@ class Sidebar {
   /**
    * При нажатии на кнопку входа, показывает окно входа
    * (через найденное в App.getModal)
-   * При нажатии на кнопку регастрации показывает окно регистрации
+   * При нажатии на кнопку регистрации показывает окно регистрации
    * При нажатии на кнопку выхода вызывает User.logout и по успешному
-   * выходу устанавливает App.setState( 'init' )
+   * выходу устанавливает App.setState('init')
    * */
   static initAuthLinks() {
-    const registerButton = document.querySelector('.menu-item_register')
-    const loginButton = document.querySelector('.menu-item_login')
+    const registerButton = document.querySelector('.menu-item_register a')
+    const loginButton = document.querySelector('.menu-item_login a')
     const logoutButton = document.querySelector('.menu-item_logout')
 
     registerButton.addEventListener('click', () => {
@@ -52,8 +51,9 @@ class Sidebar {
 
     logoutButton.addEventListener('click', () => {
       User.logout((err, response) => {
+        if( response && response.success) {
           App.setState('init')
-        // }
+        }
       })
     })
   }

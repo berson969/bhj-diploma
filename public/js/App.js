@@ -32,7 +32,7 @@ class App {
    * */
   static initUser() {
     User.fetch(() => this.setState(User.current() ? "user-logged" : "init"))
-  }
+    }
 
   /**
    * Инициализирует единственную динамическую
@@ -90,18 +90,18 @@ class App {
   }
 
   /**
-   * Возвращает всплывающее окно
-   * Обращается к объекту App.modals и извлекает
+   * Возвращает всплывающее окно,
+   * обращается к объекту App.modals и извлекает
    * из него свойство modalName:
-   * App.getModal( 'login' ); // извелекает App.modals.login
+   * App.getModal( 'login' ); // извлекает App.modals.login
    * */
   static getModal(modalName) {
     return this.modals[modalName];
   }
 
   /**
-   * Возвращает страницу
-   * Обращается к объекту App.pages и извлекает
+   * Возвращает страницу,
+   * обращается к объекту App.pages и извлекает
    * из него свойство pageName:
    * App.getPage( 'transactions' ); // извелекает App.pages.transactions
    * */
@@ -110,8 +110,8 @@ class App {
   }
 
   /**
-   * Возвращает виджет по названию
-   * Обращается к объекту App.widgets и извлекает
+   * Возвращает виджет по названию,
+   * обращается к объекту App.widgets и извлекает
    * из него свойство widgetName:
    * App.getWidget( 'transactions' ); // извелекает App.widgets.transactions
    * */
@@ -120,8 +120,8 @@ class App {
   }
 
   /**
-   * Возвращает форму по названию
-   * Обращается к объекту App.forms и извлекает
+   * Возвращает форму по названию,
+   * обращается к объекту App.forms и извлекает
    * из него свойство formName:
    * App.getWidget( 'transactions' ); // извелекает App.forms.transactions
    * */
@@ -155,11 +155,14 @@ class App {
     }
     this.element.classList.add(`app_${state}`);
     this.state = state;
+    const accountElement = document.querySelector('.content-header')
 
     if (state === "user-logged") {
-      this.update();
+      this.update()
+      accountElement.style.display = 'block'
     }
     if (state === "init") {
+      accountElement.style.display = 'none'
       this.clear();
     }
   }

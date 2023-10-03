@@ -2,9 +2,12 @@
  * Основная функция для совершения запросов
  * на сервер.
  * */
-const URL = 'http://localhost:8000'
-let queryString = ''
+
 const createRequest = (options = {}, p) => {
+
+    // const URL = 'http://localhost:8000'
+    const URL = ''
+    let queryString = ''
 
     const xhr = new XMLHttpRequest()
     xhr.responseType = 'json'
@@ -24,23 +27,28 @@ const createRequest = (options = {}, p) => {
         }
     }
 
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === xhr.DONE) {
-            if (xhr.status) {
-                if (xhr.status >= 200 && xhr.status < 300) {
+
+    try {
+        xhr.addEventListener("readystatechange", function () {
+            if (xhr.readyState === xhr.DONE && xhr.status >= 200 && xhr.status < 304) {
+                console.log('Status', xhr.response)
+                if (xhr.response && xhr.response.success) {
                     options.callback(null, xhr.response)
-                    console.log('Данные, если нет ошибки', {response: xhr.response, status: xhr.status})
                 } else {
-                    console.log('Ошибка, если есть', {status: xhr.status, statusText: xhr.statusText})
-                    options.callback({status: xhr.status, statusText: xhr.statusText}, null);
+                    console.log('StatusError', xhr.error)
+                    options.callback(xhr.error, null)
                 }
             }
-        }
+        });
+    } catch (error) {
+        options.callback(error, null);
     }
-    console.log('request', options.method, options.url, formData.get('email'))
+    // console.log('XHR.request', options.method, options.url, options.data, "formData", formData.get('email'))
     xhr.open(options.method, URL + options.url + queryString, true)
-    xhr.withCredentials = true
+    // xhr.withCredentials = true
     xhr.send(options.method === 'GET' ? null : formData)
+    // xhr.send(formData)
+    return xhr
 }
 
 // createRequest({

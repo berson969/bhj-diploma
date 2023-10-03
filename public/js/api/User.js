@@ -11,7 +11,12 @@ class User {
    * локальном хранилище.
    * */
   static setCurrent(user) {
-    localStorage.user = JSON.stringify(user)
+
+    if (user) {
+      localStorage.user = JSON.stringify(user)
+    } else {
+      this.unsetCurrent()
+    }
   }
 
   /**
@@ -27,6 +32,7 @@ class User {
    * из локального хранилища
    * */
   static current() {
+
     const user = localStorage.user
     if (user) {
       return JSON.parse(user)
@@ -41,16 +47,13 @@ class User {
     createRequest({
       url: `${this.URL}/current`,
       method: 'GET',
-      data: null,
       callback: (err, response) => {
-        console.log('current', response)
-        if (response) {
-          if (response.user) {
-            this.setCurrent(response.user)
-          }
-          callback(err, response)
-          App.initUser()
-          }
+        if (response && response.user) {
+          this.setCurrent(response.user)
+        } else {
+          this.unsetCurrent()
+        }
+        callback(err, response)
       }
     })
   }
@@ -64,16 +67,17 @@ class User {
    * */
   static login(data, callback) {
     createRequest({
-      url: this.URL + '/login',
+      url: `${this.URL}/login`,
       method: 'POST',
       // responseType: 'json',
-      data: data,
+      data,
+
       callback: (err, response) => {
         if (response && response.user) {
           this.setCurrent(response.user)
         }
         callback(err, response)
-        }
+      }
     })
   }
 
@@ -87,12 +91,12 @@ class User {
     createRequest({
       url: `${this.URL}/register`,
       method: 'POST',
-      data: data,
+      data,
       callback: (err, response) => {
         if (response && response.user) {
           this.setCurrent(response.user)
         }
-          callback(err, response)
+        callback(err, response)
       }
     })
   }
@@ -107,7 +111,7 @@ class User {
       method: 'POST',
       data: null,
       callback: (err, response) => {
-        if (err) {
+        if (response) {
           User.unsetCurrent()
         }
         callback(err, response)

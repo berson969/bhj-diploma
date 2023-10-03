@@ -51,7 +51,6 @@ router.delete("/", upload.none(), function(request, response) {
 router.get("/:id?", upload.none(), function(request, response) {
     const db = low(new FileSync('db.json'));
     let { id } = request.session; // получение id пользователя из запроса
-
     let user = db.get("users").find({id});
     let userValue = user.value();
 

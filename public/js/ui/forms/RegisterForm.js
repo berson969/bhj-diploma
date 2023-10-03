@@ -11,18 +11,16 @@ class RegisterForm extends AsyncForm {
    * */
   onSubmit(data) {
     console.log('RegisterForm.onSubmit(data)')
-    User.register(data, callback => {
-      if (callback.response) {
-        if (callback.response.success) {
-          App.setState('user-logged')
-          const modalRegister = App.getModal()
-          console.log('modalRegister', modalRegister)
-          modalRegister.close()
-          callback(null, callback.response.user)
+    User.register(data, (err, response) => {
+        this.element.reset()
+        if (response && response.success) {
+           App.setState('user-logged')
+           const modalRegister = App.getModal('register')
+           console.log('modalRegister', modalRegister)
+           modalRegister.close()
         } else {
-          callback(callback.err, null)
+            console.log('Ошибка RegisterForm', err )
         }
-      }
     })
   }
 }
